@@ -1,6 +1,6 @@
-// S1910307095_Senger_1.cpp:								MSe, 2021-03-26 
+// main.cpp:								MSe, 2021-03-26 
 // v1.0
-// FH Oberösterreich / Campus Hagenberg
+// FH OberÃ¶sterreich / Campus Hagenberg
 // ---- 
 // Time effort: approx. 10 h
 // ----
