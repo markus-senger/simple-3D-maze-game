@@ -20,47 +20,47 @@ using namespace std;
 int windowid;
 
 // ------ constant variables --------------------------------------
-constexpr bool		fly_mode_active		= false;												// if TRUE: allows you to fly up or down with "q" and "e" 
+constexpr bool		fly_mode_active		= false;						// if TRUE: allows you to fly up or down with "q" and "e" 
 
-constexpr int		labyrinth_size_x	= 10;													// array position: width of the labyrinth 
-constexpr int		labyrinth_size_z	= labyrinth_size_x + 5;									// array position: length of the labyrinth + starting room
-constexpr float		wall_size			= 5.0f;													// length and width of a wall in the labyrinth
+constexpr int		labyrinth_size_x	= 10;							// array position: width of the labyrinth 
+constexpr int		labyrinth_size_z	= labyrinth_size_x + 5;					// array position: length of the labyrinth + starting room
+constexpr float		wall_size		= 5.0f;							// length and width of a wall in the labyrinth
 constexpr float		start_room_z		= (labyrinth_size_z - labyrinth_size_x) * wall_size;	// actual length of the starting room
-constexpr float		game_board_x		= labyrinth_size_x * wall_size;							// actual width of the labyrinth 
-constexpr float		game_board_z		= game_board_x + start_room_z;							// actual length of the labyrinth + starting room
+constexpr float		game_board_x		= labyrinth_size_x * wall_size;				// actual width of the labyrinth 
+constexpr float		game_board_z		= game_board_x + start_room_z;				// actual length of the labyrinth + starting room
 
-constexpr float		move_speed			= 0.5f;													// speed of movement of the camera
-constexpr float		rotate_speed		= 0.1f;													// speed of rotation of the camera 
-constexpr float		jump_limit			= 5.0f;													// maximum jump height of the camera 
-constexpr float		coins_animation_max	= 1.0f;													// maximum height for the animation when picking up a coin 
+constexpr float		move_speed		= 0.5f;							// speed of movement of the camera
+constexpr float		rotate_speed		= 0.1f;							// speed of rotation of the camera 
+constexpr float		jump_limit		= 5.0f;							// maximum jump height of the camera 
+constexpr float		coins_animation_max	= 1.0f;							// maximum height for the animation when picking up a coin 
 
-constexpr float		default_cam_x		= 0.0f;													// default camera settings for the x-coordinate
-constexpr float		default_cam_y		= 0.5f;													// default camera settings for the y-coordinate
-constexpr float		default_cam_z		= game_board_z / 2 - 15.0f;								// default camera settings for the z-coordinate
+constexpr float		default_cam_x		= 0.0f;							// default camera settings for the x-coordinate
+constexpr float		default_cam_y		= 0.5f;							// default camera settings for the y-coordinate
+constexpr float		default_cam_z		= game_board_z / 2 - 15.0f;				// default camera settings for the z-coordinate
 
 // ------ prototypes --------------------------------------
 void draw_text_collectables				(void);
-bool collision_back						(int x, int z);
+bool collision_back					(int x, int z);
 bool collision_front					(int x, int z);
 bool collision_right					(int x, int z);
-bool collision_left						(int x, int z);
+bool collision_left					(int x, int z);
 bool collision_detected					(bool (*function) (int x, int y), int object);
-void keyboard							(unsigned char key, int x, int y);
-void reshape_func						(int x, int y);
+void keyboard						(unsigned char key, int x, int y);
+void reshape_func					(int x, int y);
 void draw_part_of_wall					(void);
-void draw_floor							(void);
-void draw_object_1						(void);
-void draw_object_2						(void);
-void draw_object_3_primitives			(void);
+void draw_floor						(void);
+void draw_object_1					(void);
+void draw_object_2					(void);
+void draw_object_3_primitives				(void);
 void draw_collectables					(void);
-void draw_labyrinth						(void);
+void draw_labyrinth					(void);
 void draw_game_board					(void);
-void mouse_move							(int mx, int my);
-void on_mouse_click						(int button, int state, int x, int y);
-void collectables_collected_animation	(int value);
+void mouse_move						(int mx, int my);
+void on_mouse_click					(int button, int state, int x, int y);
+void collectables_collected_animation			(int value);
 void rotate_collectables				(int value);
 void rotate_cam_with_mouse				(int value);
-void cam_jump							(int value);
+void cam_jump						(int value);
 void create_collectables				(void);
 
 
@@ -146,31 +146,31 @@ public:
 		);
 	}
 
-	GLfloat get_lx					() const { return lx; }
-	GLfloat get_lz					() const { return lz; }
-	GLfloat get_nav_x				() const { return nav_x; }
-	GLfloat get_nav_y				() const { return nav_y; }
-	GLfloat get_nav_z				() const { return nav_z; }
-	bool	get_jumping				() const { return jumping; }
+	GLfloat get_lx			() const { return lx; }
+	GLfloat get_lz			() const { return lz; }
+	GLfloat get_nav_x		() const { return nav_x; }
+	GLfloat get_nav_y		() const { return nav_y; }
+	GLfloat get_nav_z		() const { return nav_z; }
+	bool	get_jumping		() const { return jumping; }
 	bool	get_jump_limit_reached	() const { return jump_limit_reached; }
-	bool	get_mouse_is_right		() const { return mouse_is_right; }
-	bool	get_mouse_is_left		() const { return mouse_is_left; }
+	bool	get_mouse_is_right	() const { return mouse_is_right; }
+	bool	get_mouse_is_left	() const { return mouse_is_left; }
 
-	void	set_nav_y				(const GLfloat y = 0.5) { nav_y = y; }
-	void	set_nav_x				(const GLfloat x)		{ nav_x = x; }
-	void	set_jumping				(const bool is_jumping) { jumping = is_jumping; }
+	void	set_nav_y		(const GLfloat y = 0.5) { nav_y = y; }
+	void	set_nav_x		(const GLfloat x)	{ nav_x = x; }
+	void	set_jumping		(const bool is_jumping) { jumping = is_jumping; }
 	void	set_jump_limit_reached	(const bool reached)	{ jump_limit_reached = reached; }
-	void	set_mouse_is_right		(const bool right)		{ mouse_is_right = right; }
-	void	set_mouse_is_left		(const bool left)		{ mouse_is_left = left; }
+	void	set_mouse_is_right	(const bool right)	{ mouse_is_right = right; }
+	void	set_mouse_is_left	(const bool left)	{ mouse_is_left = left; }
 
 private:
-	GLfloat angle				{ 0.0f };				// angle of rotation for the camera direction
-	GLfloat lx					{ 0.0f };				// actual vector representing the camera's direction x
-	GLfloat lz					{ -1.0f };				// actual vector representing the camera's direction z
-	GLfloat nav_x				{ default_cam_x };		// x position of the camera
-	GLfloat nav_y				{ default_cam_y };		// y position of the camera
-	GLfloat nav_z				{ default_cam_z };		// z position of the camera
-	bool	jumping				{ false };
+	GLfloat angle			{ 0.0f };		// angle of rotation for the camera direction
+	GLfloat lx			{ 0.0f };		// actual vector representing the camera's direction x
+	GLfloat lz			{ -1.0f };		// actual vector representing the camera's direction z
+	GLfloat nav_x			{ default_cam_x };	// x position of the camera
+	GLfloat nav_y			{ default_cam_y };	// y position of the camera
+	GLfloat nav_z			{ default_cam_z };	// z position of the camera
+	bool	jumping			{ false };
 	bool	jump_limit_reached	{ false };
 	bool	mouse_is_right		{ false };
 	bool	mouse_is_left		{ false };
@@ -182,25 +182,25 @@ public:
 	collectable(int z, int x) : pos_z_labyrinth{ z }, pos_x_labyrinth{ x } {
 	}
 
-	int		get_pos_x				() const { return pos_x_labyrinth; }
-	int		get_pos_z				() const { return pos_z_labyrinth; }
-	GLfloat get_pos_y				() const { return pos_y; }
-	bool	get_near_coin			() const { return near_coin; }
-	bool	get_is_collected		() const { return is_collected; }
+	int	get_pos_x		() const { return pos_x_labyrinth; }
+	int	get_pos_z		() const { return pos_z_labyrinth; }
+	GLfloat get_pos_y		() const { return pos_y; }
+	bool	get_near_coin		() const { return near_coin; }
+	bool	get_is_collected	() const { return is_collected; }
 	bool	get_animation_max_point	() const { return animation_max_point; }
 
-	void	set_pos_y				(const GLfloat y)	{ pos_y = y; }
-	void	set_near_coin			(const bool n)		{ if (!is_collected) near_coin = n; }
-	void	set_is_collected		(const bool col)	{ is_collected = col; near_coin = false; }
+	void	set_pos_y		(const GLfloat y)	{ pos_y = y; }
+	void	set_near_coin		(const bool n)		{ if (!is_collected) near_coin = n; }
+	void	set_is_collected	(const bool col)	{ is_collected = col; near_coin = false; }
 	void	set_animation_max_point	(const bool max)	{ animation_max_point = max; }
 	
 private:
-	int		pos_x_labyrinth			{ 0 };
-	int		pos_z_labyrinth			{ 0 };
-	GLfloat	pos_y					{ -1.0f };
-	bool	near_coin				{ false };
-	bool	is_collected			{ false };
-	bool	animation_max_point		{ false };
+	int	pos_x_labyrinth		{ 0 };
+	int	pos_z_labyrinth		{ 0 };
+	GLfloat	pos_y			{ -1.0f };
+	bool	near_coin		{ false };
+	bool	is_collected		{ false };
+	bool	animation_max_point	{ false };
 };
 
 // ------ collectables --------------------------------------
@@ -273,24 +273,24 @@ public:
 		}
 	}
 
-	int		get_max_collectables	()	const { return max_collectables; }
-	int		get_collected			()	const { return collected; }
-	GLfloat get_angle				()	const { return angle; }
+	int	get_max_collectables	()	const { return max_collectables; }
+	int	get_collected		()	const { return collected; }
+	GLfloat get_angle		()	const { return angle; }
 
-	void	set_max_collectables	(const int max)			{ max_collectables = max; }
-	void	set_collected			(const int increase)	{ collected = increase; }
-	void	set_angle				(const GLfloat ang)		{ 
-																angle = ang; 
-																if (angle >= 360.0f) {
-																	angle -= 360.0f;
-																}
-															}
+	void	set_max_collectables	(const int max)		{ max_collectables = max; }
+	void	set_collected		(const int increase)	{ collected = increase; }
+	void	set_angle		(const GLfloat ang)	{ 
+									angle = ang; 
+									if (angle >= 360.0f) {
+										angle -= 360.0f;
+									}
+								}
 
 private:
-	vector<shared_ptr<collectable>>		coins;							// vector to save the coins
-	int									max_collectables	{ 0 };		// maximum number of coins that can be collected 
-	int									collected			{ 0 };		// number of coins already collected 
-	GLfloat								angle				{ 0.0f };	// current angle of the coins 
+	vector<shared_ptr<collectable>>	coins;					// vector to save the coins
+	int				max_collectables	{ 0 };		// maximum number of coins that can be collected 
+	int				collected		{ 0 };		// number of coins already collected 
+	GLfloat				angle			{ 0.0f };	// current angle of the coins 
 };
 
 // ------ global variables --------------------------------------
