@@ -1,6 +1,7 @@
 # simple-3D-maze-game
 With OpenGL and GLUT. (Exercise for university)
 
+The university's requirement was to create the maze in just one cpp file
 
 ![image](https://user-images.githubusercontent.com/77236323/176274957-262b895c-3330-4d54-ba5e-080a3a7abe35.png)
 
